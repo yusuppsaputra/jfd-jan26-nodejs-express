@@ -1,27 +1,56 @@
-const express = require('express')
-const app = express()
-const port = 4090
+const express   = require('express')
+const app       = express()
+const port      = 4090
 
 
-app.set('view engine', 'ejs')
-app.set('views', './view')
+app.set('view engine', 'ejs')   //setting penggunaan template engine untuk express
+app.set('views', './view')      //setting penggunaan folder untuk menyimpan file .ejs
+
 
 app.get('/', (req, res) => {
-  res.render(`beranda`)
+    res.render('beranda')
 })
 
 app.get('/profil', (req, res) => {
-  res.render(`profil`)
+    res.render('profil')
 })
 
-app.use((req, res, next) => {
-  res.status(404).send(`
-    <h1>Halaman Tidak Ditemukan</h1>
-    <hr>
-    <button><a href="/">Kembali ke Beranda</a></button>
-  `)
-});
+app.get('/pengalaman', (req, res) => {
+    let namaLengkap = 'Aji Kowiyu'
+    // 1. data harus dikirim ke view
+    // 2. data harus dipanggil di dalam view
+    res.render('detail-pengalaman', {
+        nama: namaLengkap,
+        alamat: 'Pluit, Jakarta Utara',
+        posisi: 'Programmer',
+        perusahaan: 'PT Freeport Jaya Makmur',
+        gaji: 9000000
+    })
+})
+
+// synchronous = berjalan berurutan
+// asynchronous = berjalan tidak berurutan
+app.get('/karyawan', async (req,res)=>{
+    res.render('karyawan/all', {
+        data_karyawan: await require('./model/m_karyawan').get_semua_karyawan()
+    })
+})
+
+app.get('/karyawan/detail/:id_kry', async (req,res)=>{
+    let id_kry = req.params.id_kry
+    res.render('karyawan/profil', {
+        profil_karyawan: await require('./model/m_karyawan').get_1_karyawan(id_kry)
+    })
+})
+
+app.get('/karyawan/hapus/:id_kry', async (req,res)=>{
+    let id_kry = req.params.id_kry
+    let proses_hapus = await require('./model/m_karyawan').delete_1_karyawan(id_kry)
+    if (proses_hapus.affectedRows > 0) {
+        res.redirect('/karyawan')
+    }
+})
 
 app.listen(port, () => {
-  console.log(`Aplikasi berjalan di port http://localhost:${port}`)
+    console.log(`Aplikasi berjalan di http://localhost:${port}`)
 })

@@ -1,0 +1,22 @@
+<h1>Detail Pengalaman</h1>
+
+<% pengalaman.forEach(function(item) { %>
+
+    <ul>
+        <li>Nama: <%= item.nama %>
+        </li>
+        <li>Alamat: <%= item.alamat %>
+        </li>
+        <li>Posisi: <%= item.posisi %>
+        </li>
+        <li>Perusahaan: <%= item.perusahaan %>
+        </li>
+        <li>Gaji: Rp. <%= item.gaji.toLocaleString('id-ID') %>
+        </li>
+        <li>Status Pajak: <%= item.pajak %>
+        </li>
+    </ul>
+
+    <hr>
+
+    <% }) %>
