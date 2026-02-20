@@ -1,6 +1,6 @@
 const mysql = require('mysql2')
 const db = mysql.createConnection({
-    host: 'localhost',
+    host    : 'localhost',
     user: 'root',
     password: '',
     database: 'kelas_js_januari'
@@ -51,6 +51,32 @@ module.exports =
             'DELETE FROM karyawan WHERE id = ?',
             [id_kry]
         )
+
+        return new Promise( function(resolve,reject) {
+            db.query(sql, function(errorSql, hasil) {
+                if (errorSql) {
+                    reject(errorSql)
+                } else {
+                    resolve(hasil)
+                }
+            })
+        })
+    },
+
+    
+    insert_1_karyawan: function (req) {
+        let sql = mysql.format(
+            'INSERT INTO karyawan SET ?',
+            [{
+                nama            : req.body.form_nama,
+                tanggal_lahir   : req.body.form_tgl_lahir,
+                jenis_kelamin   : req.body.form_gender,
+                alamat          : req.body.form_alamat,
+                agama_id        : req.body.form_agama_id,
+                jabatan_id      : req.body.form_jabatan_id,
+            }]
+        
+    )
 
         return new Promise( function(resolve,reject) {
             db.query(sql, function(errorSql, hasil) {

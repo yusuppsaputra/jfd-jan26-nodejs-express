@@ -1,4 +1,16 @@
 Halaman data semua karyawan
+<hr>
+<a href="/karyawan/tambah">
+    <button>+ Tambah Karyawan</button>
+</a>
+<br> <br>
+
+<% if (req.query.success_msg) { %>
+    <h3 style="color: green;">&#9989; <%= req.query.success_msg %>
+    </h3>
+    <% } %>
+
+
 <%#= JSON.stringify(data_karyawan) %>
 
     <!-- teknik buka tutup tag ejs -->
